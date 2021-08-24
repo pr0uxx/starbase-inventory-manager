@@ -1,13 +1,13 @@
 module.exports = {
-	css: {
+    css: {
 		loaderOptions: {
 			sass: {
-				additionalData: `
-					@import "@/assets/scss/style.scss";
-				`
+				additionalData: '\n\t\t\t\t\t@import "@/assets/scss/style.scss";\n\t\t\t\t'
 			}
 		}
 	},
-	outputDir: './docs',
-	publicPath: '/starbase-inventory-manager/',
+
+    publicPath: '/starbase-inventory-manager/',
+    productionSourceMap: false,
+    outputDir: 'docs'
 }
