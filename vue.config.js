@@ -9,5 +9,5 @@ module.exports = {
 		}
 	},
 	outputDir: './docs',
-	publicPath: '/',
+	publicPath: '/starbase-inventory-manager/',
 }
