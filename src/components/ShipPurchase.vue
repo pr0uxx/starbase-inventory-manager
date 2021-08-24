@@ -102,8 +102,7 @@
 		},
 		methods: {
 			formatNumber(n: number) {
-				if (!n) return 0;
-				return n.toFixed(0);
+				return n ? n.toFixed(0) : 0;
 			},
 			showLoadShipDialog() {
 				this.getShipNames().then(() => {

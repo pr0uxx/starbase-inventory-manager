@@ -60,7 +60,7 @@
 		},
 		methods: {
 			formatNumber(n: number) {
-				return n.toFixed(0);
+				return n ? n.toFixed(0) : 0;
 			}
 		}
 	})
