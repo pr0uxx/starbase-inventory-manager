@@ -3,6 +3,14 @@
 		<input type="number" v-model="playerInventory.cash" class="form-control" id="floatingInput">
 		<label for="floatingInput">Player Cash Balance</label>
 	</div>
+	<ul>
+		<li>
+			Inventory total ore: {{playerInventory.totalOreVolume}}
+		</li>
+		<li>
+			Inventory total value: {{playerInventory.totalOreValue}}
+		</li>
+	</ul>
 	<table class="table table-striped">
 		<thead>
 			<tr>

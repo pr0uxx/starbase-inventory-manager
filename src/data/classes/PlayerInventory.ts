@@ -9,6 +9,34 @@ export default class PlayerInventory {
 
 	ores: PlayerOwnedOre[];
 	cash: number;
+	get totalOreVolume(): number {
+		const r = this.sum(this.ores.map(x => {
+			if (x.totalOre) {
+				return x.totalOre;
+			} else {
+				const totalOre = (x.fullStackCount * x.stackSize) + x.nonFullStackTotalVolume;
+				return Number(totalOre.toFixed(0));
+			}
+			
+		}));
+		return r;
+	}
+
+	get totalOreValue(): number {
+		return this.sum(this.ores.map(x => {
+			if (x.totalMarketValue) {
+				return x.totalMarketValue;
+			} else {
+				const totalOre = (x.fullStackCount * x.stackSize) + x.nonFullStackTotalVolume;
+				const totalValue = (totalOre / x.stackSize) * x.marketValue;
+				return Number(totalValue.toFixed(0));
+			}
+		}));
+	}
+
+	private sum(arr: number[]) {
+		return arr.reduce((accumulator, currentValue) => accumulator + currentValue);
+	}
 }
 
 export class PlayerOwnedOre extends Ore {
@@ -22,6 +50,7 @@ export class PlayerOwnedOre extends Ore {
 	private _totalOre = 0;
 
 	get totalOre() {
+		console.log(this.fullStackCount, this.stackSize, this.nonFullStackTotalVolume);
 		this._totalOre = (this.fullStackCount * this.stackSize) + this.nonFullStackTotalVolume;
 		return this._totalOre;
 	}
@@ -49,6 +78,13 @@ export class InventoryCompare {
 
 	inventoryA: PlayerInventory;
 	inventoryB: PlayerInventory;
+	get totalOreValue() : number {
+		return this.inventoryA.totalOreValue - this.inventoryB.totalOreValue;
+	}
+
+	get totalOreVolume(): number {
+		return this.inventoryA.totalOreVolume - this.inventoryB.totalOreVolume;
+	}
 
 	get oreArray(): PlayerOwnedOre[] {
 		return this.inventoryA.ores.map((a, index) => {

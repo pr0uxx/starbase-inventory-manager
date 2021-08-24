@@ -4,34 +4,43 @@
 		<!--<div class="d-flex justify-content-center">
 		<img alt="Vue logo" src="../assets/logo.png">
 	</div>-->
-		<div class="d-flex">
+		<div class="d-flex flex-wrap">
 			<!--<button class="btn btn-primary stupid-btn" type="button" data-bs-toggle="collapse" data-bs-target="#pi-card" aria-expanded="false" aria-controls="collapseExample">
 				<span class="text-vertical">Player Inventory</span>
 			</button>-->
-			<div class="card me-2" id="pi-card">
-				<div class="card-header">
-					Player Inventory
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="card  me-2" id="pi-card">
+					<div class="card-header">
+						Player Inventory
+					</div>
+					<OreTable :inventory="playerInventory" />
 				</div>
-				<OreTable :inventory="playerInventory" />
 			</div>
+			
 			<!--<button class="btn btn-primary stupid-btn" type="button" data-bs-toggle="collapse" data-bs-target="#s-card" aria-expanded="false" aria-controls="collapseExample">
 				<span class="text-vertical">Ship</span>
 			</button>-->
-			<div class="card me-2" id="s-card">
-				<div class="card-header">
-					Ship
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="card me-2" id="s-card">
+					<div class="card-header">
+						Ship
+					</div>
+					<ShipPurchase :inventory="shipInventory" />
 				</div>
-				<ShipPurchase :inventory="shipInventory" />
 			</div>
+			
 			<!--<button class="btn btn-primary stupid-btn" type="button" data-bs-toggle="collapse" data-bs-target="#c-card" aria-expanded="false" aria-controls="collapseExample">
 				<span class="text-vertical">Remaining</span>
 			</button>-->
-			<div class="card me-2" id="c-card">
-				<div class="card-header">
-					Remaining
+			<div class="col-12 col-md-12 col-lg-4">
+				<div class="card me-2" id="c-card">
+					<div class="card-header">
+						Remaining
+					</div>
+					<InventoryCompare :inventoryA="playerInventory" :inventoryB="shipInventory" />
 				</div>
-				<InventoryCompare :inventoryA="playerInventory" :inventoryB="shipInventory" />
 			</div>
+			
 
 		</div>
 		<!--<HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>-->

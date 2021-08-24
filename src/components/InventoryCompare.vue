@@ -1,9 +1,17 @@
 <template>
 	<div class="form-floating m-2">
 		<input type="number" v-model="compare.cash" class="form-control" id="floatingInput" disabled
-				v-bind:class="{ 'is-invalid': compare.cash < 0, 'is-valid' : compare.cash > 0 }">
+			v-bind:class="{ 'is-invalid': compare.cash < 0, 'is-valid' : compare.cash > 0 }">
 		<label for="floatingInput">Balance After Purchase</label>
 	</div>
+	<ul>
+		<li>
+			Total ore volume remaining: {{compare.totalOreVolume}}
+		</li>
+		<li>
+			Total ore value remaining: {{compare.totalOreValue}}
+		</li>
+	</ul>
 	<table class="table table-striped">
 		<thead>
 			<tr>
