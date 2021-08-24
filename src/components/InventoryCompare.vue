@@ -9,6 +9,9 @@
 			Total ore volume remaining: {{formatNumber(compare.totalOreVolume)}}
 		</li>
 		<li>
+			Total ore stacks remaining: {{formatNumber(compare.totalOreStacks)}}
+		</li>
+		<li>
 			Total ore value remaining: {{formatNumber(compare.totalOreValue)}}
 		</li>
 	</ul>

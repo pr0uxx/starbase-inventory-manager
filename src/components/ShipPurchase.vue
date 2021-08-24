@@ -41,6 +41,9 @@
 			Ship total ore cost: {{formatNumber(shipInventory.totalOreVolume)}}
 		</li>
 		<li>
+			Ship total ore stacks: {{formatNumber(shipInventory.totalOreStacks)}}
+		</li>
+		<li>
 			Ship total ore value: {{formatNumber(shipInventory.totalOreValue)}}
 		</li>
 	</ul>

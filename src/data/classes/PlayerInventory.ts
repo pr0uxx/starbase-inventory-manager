@@ -36,6 +36,11 @@ export default class PlayerInventory {
 		}));
 	}
 
+	get totalOreStacks(): number {
+		const n = this.totalOreVolume / this.ores[0].stackSize;
+		return n ?? 0;
+	}
+
 	private sum(arr: number[]) {
 		return arr.reduce((accumulator, currentValue) => accumulator + currentValue);
 	}
@@ -86,6 +91,10 @@ export class InventoryCompare {
 
 	get totalOreVolume(): number {
 		return this.inventoryA.totalOreVolume - this.inventoryB.totalOreVolume;
+	}
+
+	get totalOreStacks(): number {
+		return this.inventoryA.totalOreStacks - this.inventoryB.totalOreStacks;
 	}
 
 	get oreArray(): PlayerOwnedOre[] {

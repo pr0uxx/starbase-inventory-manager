@@ -8,6 +8,9 @@
 			Inventory total ore: {{formatNumber(playerInventory.totalOreVolume)}}
 		</li>
 		<li>
+			Inventory total ore stacks: {{formatNumber(playerInventory.totalOreStacks)}}
+		</li>
+		<li>
 			Inventory total value: {{formatNumber(playerInventory.totalOreValue)}}
 		</li>
 	</ul>
