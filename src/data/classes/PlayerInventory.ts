@@ -15,7 +15,8 @@ export default class PlayerInventory {
 				return x.totalOre;
 			} else {
 				const totalOre = (x.fullStackCount * x.stackSize) + x.nonFullStackTotalVolume;
-				return Number(totalOre?.toFixed(0) ?? 0);
+				const t = Number(totalOre) ?? 0;
+				return Number(t.toFixed(0) ?? 0);
 			}
 			
 		}));
@@ -29,7 +30,8 @@ export default class PlayerInventory {
 			} else {
 				const totalOre = (x.fullStackCount * x.stackSize) + x.nonFullStackTotalVolume;
 				const totalValue = (totalOre / x.stackSize) * x.marketValue;
-				return Number(totalValue?.toFixed(0) ?? 0);
+				const t = Number(totalValue) ?? 0;
+				return Number(t.toFixed(0) ?? 0);
 			}
 		}));
 	}

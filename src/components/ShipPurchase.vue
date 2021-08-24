@@ -102,6 +102,7 @@
 		},
 		methods: {
 			formatNumber(n: number) {
+				n = Number(n) ?? 0;
 				return n ? n.toFixed(0) : 0;
 			},
 			showLoadShipDialog() {
