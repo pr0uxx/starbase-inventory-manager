@@ -8,6 +8,6 @@ module.exports = {
 	},
 
     publicPath: '/starbase-inventory-manager/',
-    productionSourceMap: false,
+    //productionSourceMap: false,
     outputDir: 'docs'
 }
