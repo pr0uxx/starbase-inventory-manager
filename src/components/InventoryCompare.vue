@@ -6,10 +6,10 @@
 	</div>
 	<ul>
 		<li>
-			Total ore volume remaining: {{compare.totalOreVolume}}
+			Total ore volume remaining: {{formatNumber(compare.totalOreVolume)}}
 		</li>
 		<li>
-			Total ore value remaining: {{compare.totalOreValue}}
+			Total ore value remaining: {{formatNumber(compare.totalOreValue)}}
 		</li>
 	</ul>
 	<table class="table table-striped">

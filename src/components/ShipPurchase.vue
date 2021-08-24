@@ -38,10 +38,10 @@
 
 	<ul>
 		<li>
-			Ship total ore cost: {{shipInventory.totalOreVolume}}
+			Ship total ore cost: {{formatNumber(shipInventory.totalOreVolume)}}
 		</li>
 		<li>
-			Ship total ore value: {{shipInventory.totalOreValue}}
+			Ship total ore value: {{formatNumber(shipInventory.totalOreValue)}}
 		</li>
 	</ul>
 	

@@ -5,10 +5,10 @@
 	</div>
 	<ul>
 		<li>
-			Inventory total ore: {{playerInventory.totalOreVolume}}
+			Inventory total ore: {{formatNumber(playerInventory.totalOreVolume)}}
 		</li>
 		<li>
-			Inventory total value: {{playerInventory.totalOreValue}}
+			Inventory total value: {{formatNumber(playerInventory.totalOreValue)}}
 		</li>
 	</ul>
 	<table class="table table-striped">
