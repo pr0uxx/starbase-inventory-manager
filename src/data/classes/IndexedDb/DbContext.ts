@@ -1,11 +1,36 @@
-﻿export default class DbContext {
+﻿class DbStore {
+	constructor(tableName: string, keyPath: string, indexes: DbIndex[], autoIncrement: boolean) {
+		this.storeName = tableName;
+		this.indexes = indexes;
+		this.keyPath = keyPath;
+		this.autoIncrement = autoIncrement;
+	}
+
+	keyPath: string;
+	storeName: string;
+	indexes: DbIndex[];
+	autoIncrement: boolean;
+}
+
+class DbIndex {
+	constructor(name: string, isUnique: boolean) {
+		this.name = name;
+		this.isUnique = isUnique;
+	}
+
+	name: string;
+	isUnique: boolean;
+}
+
+export class DbContext {
 	dbName = 'sb-inv-db';
-	version = 1;
+	version = 2;
 	db: IDBDatabase | null = null;
 	/*isInitialized = false;*/
 
 	dbStores: DbStore[] = [
-		new DbStore("ShipLocalStores", "shipName", [ new DbIndex("shipName", true)])
+		new DbStore("ShipLocalStores", "shipName", [new DbIndex("shipName", true)], false),
+		new DbStore("PlayerInventory", "id", [], true)
 	];
 
 	constructor() {
@@ -24,8 +49,10 @@
 
 			request.onupgradeneeded = ev => {
 				this.addStores(ev).then(() => {
+					console.log('finished adding stores');
 					resolve(null);
 				}, (err) => {
+					console.error('error adding stores', err);
 					reject(err);
 				});
 			}
@@ -44,15 +71,36 @@
 			if (event) {
 				this.db = event.target.result as IDBDatabase;
 
+				const localPromises: Promise<unknown>[] = [];
+				const existingStores = this.db?.objectStoreNames;
+
 				if (this.db) {
 					for (const store of this.dbStores) {
-						const objStore = this.db.createObjectStore(store.storeName, { keyPath: store.keyPath });
+						localPromises.push(new Promise((res, rej) => {
+							if (existingStores.contains(store.storeName)) {
+								res(null);
+							} else {
+								console.log('creating store with name', store.storeName);
+								if (store.autoIncrement) {
+									
+									const r = this.db?.createObjectStore(store.storeName, { autoIncrement: true });
+								} else {
+									const objStore = this.db?.createObjectStore(store.storeName, { keyPath: store.keyPath });
 
-						for (const index of store.indexes) {
-							objStore.createIndex(index.name, index.name, { unique: index.isUnique});
-						}
+									for (const index of store.indexes) {
+										objStore?.createIndex(index.name, index.name, { unique: index.isUnique });
+									}
+								}
+							}
+						}));
 					}
-					resolve(null);
+
+					Promise.all(localPromises).then(() => {
+							resolve(null);
+						},
+						error => {
+							reject(error);
+						});
 				} else {
 					reject('db is null or undefined');
 				}
@@ -65,9 +113,10 @@
 		return transaction?.objectStore(storeName);
 	}
 
-	getStoredObjectByIndex<T>(store: IDBObjectStore, index: string): Promise<T | null> {
+	getStoredObjectByIndex<T>(store: IDBObjectStore, index: string | number): Promise<T | null> {
 
 		return new Promise((resolve, reject) => {
+			console.log(store);
 			const request = store.get(index);
 
 			request.onerror = ev => {
@@ -76,6 +125,7 @@
 			}
 
 			request.onsuccess = ev => {
+				console.log(request);
 				console.log(request.result);
 
 				if (request.result) {
@@ -83,7 +133,7 @@
 				} else {
 					resolve(null);
 				}
-				
+
 			}
 		});
 	}
@@ -92,7 +142,7 @@
 		return new Promise((resolve, reject) => {
 			this.getStoredObjectByIndex<T>(store, index)
 				.then(obj => {
-					let result : IDBRequest | undefined = undefined;
+					let result: IDBRequest | undefined = undefined;
 					if (obj) {
 						result = store.put(value);
 					} else {
@@ -112,28 +162,7 @@
 					}
 				});
 		});
-		
+
 	}
 }
 
-class DbStore {
-	constructor(tableName: string, keyPath: string, indexes: DbIndex[]) {
-		this.storeName = tableName;
-		this.indexes = indexes;
-		this.keyPath = keyPath;
-	}
-
-	keyPath: string;
-	storeName: string;
-	indexes: DbIndex[];
-}
-
-class DbIndex {
-	constructor(name: string, isUnique: boolean) {
-		this.name = name;
-		this.isUnique = isUnique;
-	}
-
-	name: string;
-	isUnique: boolean;
-}

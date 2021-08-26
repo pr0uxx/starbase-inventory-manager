@@ -88,7 +88,6 @@
 	import { defineComponent, inject } from 'vue';
 	import PlayerInventory, { PlayerOwnedOre } from '@/data/classes/PlayerInventory';
 	import ShipLocalStore from '../data/classes/ShipLocalStore';
-	import DbContext from '../data/classes/IndexedDb/DbContext';
 	export default defineComponent({
 		name: 'ShipPurchase',
 		data() {
@@ -110,13 +109,18 @@
 			},
 			showLoadShipDialog() {
 				this.getShipNames().then(() => {
-					this.showLoadDialog = true;
+					if (this.shipNameArray.length > 0) {
+						this.showLoadDialog = true;
+					} else {
+						alert('No saved ships!');
+					}
+					
 				})
 			},
 			saveShip() {
+				const context = this.$dbContext;
 				const inv = this.shipInventory as PlayerInventory;
 				const shipLocalStore = new ShipLocalStore(this.shipName, inv);
-				const context = new DbContext();
 				context.initDatabase().then(() => {
 					const store = context.getStore("ShipLocalStores", "readwrite");
 					if (store) {
@@ -127,8 +131,8 @@
 				});
 			},
 			getShipNames() {
+				const context = this.$dbContext;
 				return new Promise((resolve, reject) => {
-					const context = new DbContext();
 					context.initDatabase().then(() => {
 						const store = context.getStore("ShipLocalStores", "readonly");
 						if (store) {
@@ -151,7 +155,7 @@
 
 			},
 			loadShip(shipName: string) {
-				const context = new DbContext();
+				const context = this.$dbContext;
 				context.initDatabase().then(() => {
 					const store = context.getStore("ShipLocalStores", "readonly");
 					if (store) {

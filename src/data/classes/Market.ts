@@ -2,7 +2,7 @@ import Ore from "./Ore";
 import OreHistoryItem from "@/data/classes/OreHistoryItem";
 
 export default class Market {
-	static lastUpdate = new Date(2021, 8, 26);
+	static lastUpdate = new Date(2021, 7, 26);
 
 	static ores: Ore[] = [
 		new Ore('Aegisium', 6440),
@@ -41,6 +41,6 @@ export default class Market {
 			new Ore('Valkite', 543),
 			new Ore('Vokarium', 2100),
 			new Ore('Ymrium', 31270)
-		], new Date(2021, 8, 23))
+		], new Date(2021, 7, 23))
 	];
 }

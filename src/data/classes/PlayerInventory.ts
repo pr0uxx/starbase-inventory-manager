@@ -7,6 +7,7 @@ export default class PlayerInventory {
 		this.cash = 0;
 	}
 
+	readonly createdDate = new Date(Date.now());
 	ores: PlayerOwnedOre[];
 	cash: number;
 	get totalOreVolume(): number {
@@ -57,7 +58,6 @@ export class PlayerOwnedOre extends Ore {
 	private _totalOre = 0;
 
 	get totalOre() {
-		console.log(this.fullStackCount, this.stackSize, this.nonFullStackTotalVolume);
 		this._totalOre = (this.fullStackCount * this.stackSize) + this.nonFullStackTotalVolume;
 		return this._totalOre;
 	}
