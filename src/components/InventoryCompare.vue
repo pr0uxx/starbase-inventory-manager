@@ -1,6 +1,6 @@
 <template>
 	
-	<div class="container-fluid">
+	<div class="container-fluid inventory-card">
 		<div class="form-floating m-2">
 			<input type="number" v-model="compare.cash" class="form-control" id="floatingInput" disabled
 					v-bind:class="{ 'is-invalid': compare.cash < 0, 'is-valid' : compare.cash > 0 }">

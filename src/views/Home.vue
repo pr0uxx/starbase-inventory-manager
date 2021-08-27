@@ -1,14 +1,7 @@
 <template>
 	<div class="home container-fluid">
-		<p>Prices last updated: {{market.lastUpdate}}</p>
-		<!--<div class="d-flex justify-content-center">
-		<img alt="Vue logo" src="../assets/logo.png">
-	</div>-->
-		
+		<p>Prices last updated: {{market.lastUpdate}}</p>	
 		<div class="d-flex flex-wrap">
-			<!--<button class="btn btn-primary stupid-btn" type="button" data-bs-toggle="collapse" data-bs-target="#pi-card" aria-expanded="false" aria-controls="collapseExample">
-			<span class="text-vertical">Player Inventory</span>
-		</button>-->
 			<div class="col-12 col-md-6 col-lg-4">
 				<div class="card  me-2" id="pi-card">
 					<div class="card-header">
@@ -17,10 +10,6 @@
 					<OreTable :inventory="playerInventory" />
 				</div>
 			</div>
-
-			<!--<button class="btn btn-primary stupid-btn" type="button" data-bs-toggle="collapse" data-bs-target="#s-card" aria-expanded="false" aria-controls="collapseExample">
-			<span class="text-vertical">Ship</span>
-		</button>-->
 			<div class="col-12 col-md-6 col-lg-4">
 				<div class="card me-2" id="s-card">
 					<div class="card-header">
@@ -29,10 +18,6 @@
 					<ShipPurchase :inventory="shipInventory" />
 				</div>
 			</div>
-
-			<!--<button class="btn btn-primary stupid-btn" type="button" data-bs-toggle="collapse" data-bs-target="#c-card" aria-expanded="false" aria-controls="collapseExample">
-			<span class="text-vertical">Remaining</span>
-		</button>-->
 			<div class="col-12 col-md-12 col-lg-4">
 				<div class="card me-2" id="c-card">
 					<div class="card-header">
@@ -44,16 +29,10 @@
 
 
 		</div>
-		<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<ul class="nav nav-tabs mt-4" id="myTab" role="tablist">
 			<li class="nav-item" role="presentation">
 				<button class="nav-link active" id="market-tab" data-bs-toggle="tab" data-bs-target="#market" type="button" role="tab" aria-controls="market" aria-selected="true">Edit Market Values</button>
 			</li>
-			<!--<li class="nav-item" role="presentation">
-				<button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
-			</li>
-			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
-			</li>-->
 		</ul>
 
 		<div class="tab-content" id="myTabContent">
@@ -63,13 +42,8 @@
 						<MarketComponent class="p-2" @updateOres="updateOreValues()"></MarketComponent>
 					</div>
 				</div>
-				
 			</div>
-			<!--<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-			<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>-->
 		</div>
-		<!--<HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>-->
-
 	</div>
 </template>
 

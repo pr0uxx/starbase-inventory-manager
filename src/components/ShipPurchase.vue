@@ -1,54 +1,57 @@
 <template>
-	<div class="container-fluid">
-		<div class="form-floating m-2">
-			<input type="number" v-model="shipInventory.cash" class="form-control" id="floatingInput">
-			<label for="floatingInput">Ship Price</label>
-		</div>
-	</div>
-
-
-	<div class="container-fluid" v-if="!showLoadDialog">
-		<div class="row">
-			<div class="col-6">
-				<div class="form-floating m-2">
-					<input type="text" v-model="shipName" class="form-control" id="floatingInput">
-					<label for="floatingInput">Ship Name</label>
-				</div>
-			</div>
-			<div class="col-6 d-flex align-items-center justify-content-center">
-				<div class="btn-group">
-					<button class="btn btn-primary" @click="saveShip()">Save Ship</button>
-					<button class="btn btn-secondary" @click="showLoadShipDialog()">Load Ship</button>
-				</div>
+	<div class="inventory-card">
+		<div class="container-fluid">
+			<div class="form-floating m-2">
+				<input type="number" v-model="shipInventory.cash" class="form-control" id="floatingInput">
+				<label for="floatingInput">Ship Price</label>
 			</div>
 		</div>
-	</div>
 
-	<div class="container-fluid">
-		<div class="d-flex w-100" v-if="showLoadDialog">
-			<select v-model="shipToLoad" class="form-select m-2" @change="loadShip(shipToLoad)">
-				<option disabled value="">Please select one</option>
-				<option v-for="name in shipNameArray" :key="name">{{name}}</option>
-			</select>
+
+		<div class="container-fluid" v-if="!showLoadDialog">
+			<div class="row">
+				<div class="col-6">
+					<div class="form-floating m-2">
+						<input type="text" v-model="shipName" class="form-control" id="floatingInput">
+						<label for="floatingInput">Ship Name</label>
+					</div>
+				</div>
+				<div class="col-6 d-flex align-items-center justify-content-center">
+					<div class="btn-group">
+						<button class="btn btn-primary" @click="saveShip()">Save Ship</button>
+						<button class="btn btn-secondary" @click="showLoadShipDialog()">Load Ship</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<div class="d-flex w-100" v-if="showLoadDialog">
+				<select v-model="shipToLoad" class="form-select m-2" @change="loadShip(shipToLoad)">
+					<option disabled value="">Please select one</option>
+					<option v-for="name in shipNameArray" :key="name">{{name}}</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<div class="card m-2 px-2">
+				<p class="d-flex justify-content-between w-100">
+					<span>Ship total ore cost: </span>
+					<span>{{formatNumber(shipInventory.totalOreVolume)}}</span>
+				</p>
+				<p class="d-flex justify-content-between w-100">
+					<span>Ship total ore stacks:</span>
+					<span>{{formatNumber(shipInventory.totalOreStacks)}}</span>
+				</p>
+				<p class="d-flex justify-content-between w-100">
+					<span>Ship total ore value: </span>
+					<span>{{formatNumber(shipInventory.totalOreValue)}}<img src="../assets/credit.png" /></span>
+				</p>
+			</div>
 		</div>
 	</div>
-
-	<div class="container-fluid">
-		<div class="card m-2 px-2">
-			<p class="d-flex justify-content-between w-100">
-				<span>Ship total ore cost: </span>
-				<span>{{formatNumber(shipInventory.totalOreVolume)}}</span>
-			</p>
-			<p class="d-flex justify-content-between w-100">
-				<span>Ship total ore stacks:</span>
-				<span>{{formatNumber(shipInventory.totalOreStacks)}}</span>
-			</p>
-			<p class="d-flex justify-content-between w-100">
-				<span>Ship total ore value: </span>
-				<span>{{formatNumber(shipInventory.totalOreValue)}}<img src="../assets/credit.png" /></span>
-			</p>
-		</div>
-	</div>
+	
 	<div class="table-responsive">
 		<table class="table table-sm table-striped w-100">
 			<thead>
@@ -63,7 +66,7 @@
 
 			</thead>
 			<tbody>
-				<tr v-for="ore in shipInventory.ores" :key="ore">
+				<tr class="align-middle" v-for="ore in shipInventory.ores" :key="ore">
 					<td>{{ore.name}}</td>
 					<!--<td>{{ore.marketValue}}</td>-->
 					<td width="15%">
