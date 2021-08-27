@@ -5,26 +5,23 @@
 			<label for="floatingInput">Ship Price</label>
 		</div>
 	</div>
-	
+
 
 	<div class="container-fluid" v-if="!showLoadDialog">
 		<div class="row">
-			<div class="col-7">
+			<div class="col-6">
 				<div class="form-floating m-2">
 					<input type="text" v-model="shipName" class="form-control" id="floatingInput">
 					<label for="floatingInput">Ship Name</label>
 				</div>
 			</div>
-			<div class="col-5 d-flex align-items-center justify-content-end">
-				<div class="btn-group mt-2">
+			<div class="col-6 d-flex align-items-center justify-content-center">
+				<div class="btn-group">
 					<button class="btn btn-primary" @click="saveShip()">Save Ship</button>
 					<button class="btn btn-secondary" @click="showLoadShipDialog()">Load Ship</button>
 				</div>
 			</div>
-
-
 		</div>
-
 	</div>
 
 	<div class="container-fluid">
@@ -36,53 +33,60 @@
 		</div>
 	</div>
 
-	<ul>
-		<li>
-			Ship total ore cost: {{formatNumber(shipInventory.totalOreVolume)}}
-		</li>
-		<li>
-			Ship total ore stacks: {{formatNumber(shipInventory.totalOreStacks)}}
-		</li>
-		<li>
-			Ship total ore value: {{formatNumber(shipInventory.totalOreValue)}}
-		</li>
-	</ul>
+	<div class="container-fluid">
+		<div class="card m-2 px-2">
+			<p class="d-flex justify-content-between w-100">
+				<span>Ship total ore cost: </span>
+				<span>{{formatNumber(shipInventory.totalOreVolume)}}</span>
+			</p>
+			<p class="d-flex justify-content-between w-100">
+				<span>Ship total ore stacks:</span>
+				<span>{{formatNumber(shipInventory.totalOreStacks)}}</span>
+			</p>
+			<p class="d-flex justify-content-between w-100">
+				<span>Ship total ore value: </span>
+				<span>{{formatNumber(shipInventory.totalOreValue)}}<img src="../assets/credit.png" /></span>
+			</p>
+		</div>
+	</div>
+	<div class="table-responsive">
+		<table class="table table-sm table-striped w-100">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<!--<th>Stack Value</th>-->
+					<th>Stacks</th>
+					<th>Extra Volume</th>
+					<th>Total Ore</th>
+					<th>Total <img src="../assets/credit.png" /></th>
+				</tr>
+
+			</thead>
+			<tbody>
+				<tr v-for="ore in shipInventory.ores" :key="ore">
+					<td>{{ore.name}}</td>
+					<!--<td>{{ore.marketValue}}</td>-->
+					<td width="15%">
+						<input class="form-control form-control-sm" type="number" v-model="ore.fullStackCount" />
+
+						<!--{{ore.fullStackCount}}-->
+					</td>
+					<td>
+						<input class="form-control form-control-sm" type="number" v-model="ore.nonFullStackTotalVolume" />
+						<!--{{ore.nonFullStackTotalVolume}}-->
+					</td>
+					<td>
+						{{formatNumber(ore.totalOre)}}
+					</td>
+					<td>
+						{{formatNumber(ore.totalMarketValue)}}
+
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 	
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<!--<th>Stack Value</th>-->
-				<th>Full Stack Count</th>
-				<th>Extra Volume</th>
-				<th>Total Ore</th>
-				<th>Total Value</th>
-			</tr>
-
-		</thead>
-		<tbody>
-			<tr v-for="ore in shipInventory.ores" :key="ore">
-				<td>{{ore.name}}</td>
-				<!--<td>{{ore.marketValue}}</td>-->
-				<td>
-					<input class="form-control form-control-sm" type="number" v-model="ore.fullStackCount" />
-
-					<!--{{ore.fullStackCount}}-->
-				</td>
-				<td>
-					<input class="form-control form-control-sm" type="number" v-model="ore.nonFullStackTotalVolume" />
-					<!--{{ore.nonFullStackTotalVolume}}-->
-				</td>
-				<td>
-					{{formatNumber(ore.totalOre)}}
-				</td>
-				<td>
-					{{formatNumber(ore.totalMarketValue)}}
-
-				</td>
-			</tr>
-		</tbody>
-	</table>
 </template>
 <script lang="ts">
 	import { defineComponent, inject } from 'vue';
@@ -104,8 +108,7 @@
 		},
 		methods: {
 			formatNumber(n: number) {
-				n = Number(n) ?? 0;
-				return n ? n.toFixed(0) : 0;
+				return this.$stringHelper.formatNumber(n);
 			},
 			showLoadShipDialog() {
 				this.getShipNames().then(() => {
@@ -114,7 +117,7 @@
 					} else {
 						alert('No saved ships!');
 					}
-					
+
 				})
 			},
 			saveShip() {

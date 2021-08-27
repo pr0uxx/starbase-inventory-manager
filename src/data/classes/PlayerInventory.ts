@@ -5,28 +5,52 @@ export default class PlayerInventory {
 	constructor() {
 		this.ores = Market.ores.map(x => new PlayerOwnedOre(x.name, x.marketValue));
 		this.cash = 0;
+		this.updateOres();
+	}
+
+	private tick =  0;
+	//private startUpdating() {
+	//	requestAnimationFrame(() => this.updateOres());
+	//}
+
+	updateOres() {
+		this.ores.forEach(x => {
+			const m = Market.ores.find(o => o.name === x.name);
+			if (m) {
+				x.marketValue = m.marketValue;
+			}
+		});
+
 	}
 
 	readonly createdDate = new Date(Date.now());
 	ores: PlayerOwnedOre[];
 	cash: number;
 	get totalOreVolume(): number {
+		return this.getTotalOreVolume();
+	}
+
+	getTotalOreVolume(): number {
 		const r = this.sum(this.ores.map(x => {
-			if (x.totalOre) {
+			if (x.totalOre && x.totalOre > 0) {
 				return x.totalOre;
 			} else {
 				const totalOre = (x.fullStackCount * x.stackSize) + x.nonFullStackTotalVolume;
 				const t = Number(totalOre) ?? 0;
 				return Number(t.toFixed(0) ?? 0);
 			}
-			
+
 		}));
 		return r;
 	}
 
 	get totalOreValue(): number {
+		return this.getTotalOreValue();
+	}
+
+	getTotalOreValue(): number {
 		return this.sum(this.ores.map(x => {
-			if (x.totalMarketValue) {
+			if (x.totalMarketValue && x.totalMarketValue > 0) {
 				return x.totalMarketValue;
 			} else {
 				const totalOre = (x.fullStackCount * x.stackSize) + x.nonFullStackTotalVolume;
@@ -58,6 +82,10 @@ export class PlayerOwnedOre extends Ore {
 	private _totalOre = 0;
 
 	get totalOre() {
+		return this.getTotalOre();
+	}
+
+	getTotalOre() {
 		this._totalOre = (this.fullStackCount * this.stackSize) + this.nonFullStackTotalVolume;
 		return this._totalOre;
 	}
@@ -67,6 +95,10 @@ export class PlayerOwnedOre extends Ore {
 	//  }
 
 	get totalMarketValue() {
+		return this.getTotalMarketValue();
+	}
+
+	getTotalMarketValue() {
 		return (this.totalOre / this.stackSize) * this.marketValue;
 	}
 }
@@ -100,17 +132,26 @@ export class InventoryCompare {
 	get oreArray(): PlayerOwnedOre[] {
 		return this.inventoryA.ores.map((a, index) => {
 			const c = new PlayerOwnedOre(a.name, a.marketValue);
-			c.nonFullStackTotalVolume = a.nonFullStackTotalVolume;
-			c.fullStackCount = a.fullStackCount;
-
 			const b = this.inventoryB.ores[index];
-			c.fullStackCount -= b.fullStackCount;
-			c.nonFullStackTotalVolume = a.nonFullStackTotalVolume - b.nonFullStackTotalVolume;
+
+			const totalVolume = a.totalOre - b.totalOre;
+			const stackString = (totalVolume / a.stackSize).toString();
+			const split = stackString.split('.');
+
+			c.fullStackCount = Number(split[0]);
+			c.nonFullStackTotalVolume = split[1] ? Number(`0.${split[1]}`) * a.stackSize : 0;
+
+			//c.nonFullStackTotalVolume = a.nonFullStackTotalVolume;
+			//c.fullStackCount = a.fullStackCount;
+
+			
+			//c.fullStackCount -= b.fullStackCount;
+			//c.nonFullStackTotalVolume = a.nonFullStackTotalVolume - b.nonFullStackTotalVolume;
 			return c;
 		});
 	}
 
 	get cash() : number {
-		return this.inventoryA.cash - this.inventoryB.cash
+		return this.inventoryA.cash - this.inventoryB.cash;
 	}
 }

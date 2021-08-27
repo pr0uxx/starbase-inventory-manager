@@ -1,53 +1,59 @@
 <template>
-	<div class="form-floating m-2">
-		<input type="number" v-model="compare.cash" class="form-control" id="floatingInput" disabled
-			v-bind:class="{ 'is-invalid': compare.cash < 0, 'is-valid' : compare.cash > 0 }">
-		<label for="floatingInput">Balance After Purchase</label>
+	
+	<div class="container-fluid">
+		<div class="form-floating m-2">
+			<input type="number" v-model="compare.cash" class="form-control" id="floatingInput" disabled
+					v-bind:class="{ 'is-invalid': compare.cash < 0, 'is-valid' : compare.cash > 0 }">
+			<label for="floatingInput">Balance After Purchase</label>
+		</div>
+		<div class="card m-2  mt-3 px-2">
+			<p class="d-flex justify-content-between w-100">
+				<span>Total ore volume remaining:  </span>
+				<span>{{numberToKvString(compare.totalOreVolume)}}</span>
+			</p>
+			<p class="d-flex justify-content-between w-100">
+				<span>Total ore stacks remaining: </span>
+				<span>{{formatNumber(compare.totalOreStacks)}}</span>
+			</p>
+			<p class="d-flex justify-content-between w-100">
+				<span>Total ore value remaining: </span>
+				<span>{{formatNumber(compare.totalOreValue)}}<img src="../assets/credit.png" /></span>
+			</p>
+		</div>
 	</div>
-	<ul>
-		<li>
-			Total ore volume remaining: {{formatNumber(compare.totalOreVolume)}}
-		</li>
-		<li>
-			Total ore stacks remaining: {{formatNumber(compare.totalOreStacks)}}
-		</li>
-		<li>
-			Total ore value remaining: {{formatNumber(compare.totalOreValue)}}
-		</li>
-	</ul>
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<!--<th>Stack Value</th>-->
-				<th>Full Stack Count</th>
-				<th>Extra Volume</th>
-				<th>Total Ore</th>
-				<th>Total Value</th>
-			</tr>
+	<div class="table-responsive">
+		<table class="table table-sm  table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<!--<th>Stack Value</th>-->
+					<th>Stack Count</th>
+					<th>Extra Volume</th>
+					<th>Total Ore</th>
+					<th>Total <img src="../assets/credit.png" /></th>
+				</tr>
 
-		</thead>
-		<tbody>
-			<tr v-for="ore in compare.oreArray" :key="ore" v-bind:class="{ 'text-danger': ore.totalOre < 0, 'text-success' : ore.totalOre > 0 }">
-				<td>{{ore.name}}</td>
-				<!--<td>{{ore.marketValue}}</td>-->
-				<td>
-					<!--<input class="form-control form-control-sm" type="number" v-model="ore.fullStackCount" />-->
-					{{ore.fullStackCount}}
-				</td>
-				<td>
-					<!--<input class="form-control form-control-sm" type="number" v-model="ore.nonFullStackTotalVolume"/>-->
-					{{ore.nonFullStackTotalVolume}}
-				</td>
-				<td>
-					{{formatNumber(ore.totalOre)}}
-				</td>
-				<td>
-					{{formatNumber(ore.totalMarketValue)}}
-				</td>
-			</tr>
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				<tr v-for="ore in compare.oreArray" :key="ore" v-bind:class="{ 'text-danger': ore.totalOre < 0, 'text-success' : ore.totalOre > 0 }">
+					<td>{{ore.name}}</td>
+					<td>
+						{{ore.fullStackCount}}
+					</td>
+					<td>
+						{{formatNumber(ore.nonFullStackTotalVolume)}}
+					</td>
+					<td>
+						{{formatNumber(ore.totalOre)}}
+					</td>
+					<td>
+						{{formatNumber(ore.totalMarketValue)}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
 </template>
 <script lang="ts">
 	import { defineComponent, inject } from 'vue';
@@ -65,8 +71,10 @@
 		},
 		methods: {
 			formatNumber(n: number) {
-				n = Number(n) ?? 0;
-				return n ? n.toFixed(0) : 0;
+				return this.$stringHelper.formatNumber(n);
+			},
+			numberToKvString(n: number) {
+				return this.$stringHelper.numberToKvString(n)
 			}
 		}
 	})
